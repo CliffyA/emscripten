@@ -73,6 +73,8 @@ var LibraryGLFW = {
         case 0x26: return 283 ; //DOM_VK_UP -> GLFW_KEY_UP
         case 0x27: return 286 ; //DOM_VK_RIGHT -> GLFW_KEY_RIGHT
         case 0x28: return 284 ; //DOM_VK_DOWN -> GLFW_KEY_DOWN
+        case 13  : return 294 ; //GLFW_KEY_ENTER
+        case 8   : return 295 ; //GLFW_KEY_BACKSPACE
         case 0x21: return 298 ; //DOM_VK_PAGE_UP -> GLFW_KEY_PAGEUP
         case 0x22: return 299 ; //DOM_VK_PAGE_DOWN -> GLFW_KEY_PAGEDOWN
         case 0x24: return 300 ; //DOM_VK_HOME -> GLFW_KEY_HOME
@@ -115,9 +117,8 @@ var LibraryGLFW = {
 
     onKeyPress: function(event) {
       //charCode is only available whith onKeyPress event
-      var char = GLFW.getUnicodeChar(event.charCode);
-
-      if (event.charCode) {
+      //do not callback on enter, to match C++ library behaviour
+      if (event.charCode && event.charCode != 13 /* enter */) {
         var char = GLFW.getUnicodeChar(event.charCode);
         if (char !== null && GLFW.charFunc) {
           Runtime.dynCall('vii', GLFW.charFunc, [event.charCode, 1]);
